@@ -3,14 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CohortLens - Client-Side SaaS Retention & MRR Engine</title>
+  <title>CohortLens - Client-Side SaaS Retention & MRR Engine (Free Demo Edition)</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PapaParse for client-side streaming CSV parse -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
     tailwind.config = {
@@ -44,15 +40,6 @@
     ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #0EA5E9; }
 
-    /* Print styles for investor reports */
-    @media print {
-      body { background: #ffffff !important; color: #000000 !important; }
-      .no-print { display: none !important; }
-      .print-card { background: #ffffff !important; border: 1px solid #e2e8f0 !important; color: #0f172a !important; break-inside: avoid; }
-      .print-dark-text { color: #0f172a !important; }
-      header { border-bottom: 2px solid #000 !important; }
-    }
-
     .matrix-cell {
       min-width: 58px;
       height: 38px;
@@ -68,19 +55,19 @@
 
 <body class="bg-[#090D16] text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-sky-500 selection:text-slate-950">
 
-  <!-- TOP DISCREET UPGRADE BANNER -->
-  <aside class="no-print bg-gradient-to-r from-sky-950 via-slate-900 to-indigo-950 border-b border-sky-800/40 text-xs px-4 py-1.5 flex items-center justify-center text-center gap-2 text-slate-300">
-    <span>Community Lite Edition • Unlock Full Export &amp; Unlimited Processing &rarr;</span>
-    <a href="https://bobservice.gumroad.com/l/cohortlens-client-side-saas-retention-mrr-engine?utm_source=github" target="_blank" rel="noopener noreferrer" class="font-semibold text-sky-400 hover:text-sky-300 underline ml-1">Upgrade to Pro &rarr;</a>
-  </aside>
+  <!-- FREE DEMO BANNER -->
+  <div class="bg-gradient-to-r from-sky-600 to-indigo-600 text-white text-xs font-semibold px-4 py-2 text-center shadow-md">
+    Free Demo Edition (Preloaded Sample Only) — Unlock Full Features & Custom Input in Pro Edition 
+    <a href="https://bobservice.gumroad.com/l/cohortlens-client-side-saas-retention-mrr-engine?utm_source=github" target="_blank" rel="noopener noreferrer" class="underline hover:text-sky-200 font-bold ml-1">Upgrade to Pro &rarr;</a>
+  </div>
 
   <!-- TOP ANNOUNCEMENT & PRIVACY BANNER -->
-  <aside class="no-print bg-slate-950/90 border-b border-slate-800 text-xs px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 text-slate-400">
+  <aside class="bg-slate-950/90 border-b border-slate-800 text-xs px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 text-slate-400">
     <div class="flex items-center gap-2">
       <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800">
         100% PRIVATE
       </span>
-      <span>Zero external server transmission. All billing CSV records are parsed and computed in your local browser sandbox.</span>
+      <span>Zero external server transmission. All benchmark analytics are computed in your local browser sandbox.</span>
     </div>
     <div></div>
   </aside>
@@ -96,24 +83,16 @@
         </div>
         <div>
           <h1 class="text-lg lg:text-xl font-bold tracking-tight text-white flex items-center gap-2">
-            CohortLens - Client-Side SaaS Retention & MRR Engine
+            CohortLens - Client-Side SaaS Retention Engine
           </h1>
-          <p class="text-xs text-slate-400 font-medium">Turn raw billing CSVs into investor-ready cohort heatmaps and MRR waterfall audits with zero cloud tracking.</p>
+          <p class="text-xs text-slate-400 font-medium">Interactive SaaS retention heatmaps benchmark with zero cloud tracking.</p>
         </div>
       </div>
 
-      <div class="no-print flex items-center gap-2.5 flex-wrap">
+      <div class="flex items-center gap-2.5 flex-wrap">
         <button id="loadDemoBtn" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
           <svg class="w-3.5 h-3.5 text-sky-400" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/></svg>
           Load Micro-SaaS Demo
-        </button>
-        <button id="exportCsvBtn" onclick="openModal('upgradeModal')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 transition flex items-center gap-1.5">
-          <span>🔒</span>
-          Export Cohort Matrix
-        </button>
-        <button onclick="openModal('upgradeModal')" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 text-slate-950 transition flex items-center gap-1.5 shadow-sm">
-          <span>🔒</span>
-          Print Investor Audit
         </button>
       </div>
     </div>
@@ -122,84 +101,35 @@
   <!-- MAIN CONTAINER -->
   <main class="max-w-7xl mx-auto px-4 lg:px-8 py-6 flex-1 w-full space-y-6">
 
-    <!-- DROP ZONE & FILE SELECTION CARD (NO PRINT) -->
-    <section class="no-print bg-[#0D1424] border border-slate-800 rounded-2xl p-5 shadow-xl relative overflow-hidden">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="space-y-1.5 flex-1">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-sky-400 animate-pulse"></span>
-            <h2 class="text-sm font-semibold tracking-wide uppercase text-slate-300">Data Ingestion Engine</h2>
-          </div>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Upload any raw billing ledger CSV from <strong>Stripe, Chargebee, Paddle, Recurly</strong> or custom exports. Requires minimum 3 columns: <code class="bg-slate-900 px-1 py-0.5 rounded text-sky-300 font-mono">Customer ID</code>, <code class="bg-slate-900 px-1 py-0.5 rounded text-sky-300 font-mono">Date</code>, and <code class="bg-slate-900 px-1 py-0.5 rounded text-sky-300 font-mono">MRR / Amount</code>.
-          </p>
-        </div>
-
-        <div class="w-full md:w-auto flex flex-col sm:flex-row items-center gap-3">
-          <label for="csvFileInput" class="w-full sm:w-auto cursor-pointer bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 border border-slate-700 px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-200 transition text-center flex items-center justify-center gap-2">
-            <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"/></svg>
-            Select Ledger CSV
-          </label>
-          <input type="file" id="csvFileInput" accept=".csv,text/csv" class="hidden">
-          
-          <!-- CLEAN STATIC WINDOW BADGE -->
-          <div class="inline-flex items-center gap-1.5 text-xs bg-slate-900/90 text-slate-300 px-3 py-2 rounded-xl border border-slate-800 whitespace-nowrap">
-            <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5"/>
-            </svg>
-            <span>Window: <span class="font-mono text-sky-300 font-semibold">12-Month Matrix (M0–M12)</span></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Auto Mapping Status bar -->
-      <div id="mappingStatus" class="mt-4 pt-3 border-t border-slate-800 text-xs flex flex-wrap items-center justify-between text-slate-400">
-        <span id="fileSummary">No dataset loaded. Click 'Load Micro-SaaS Demo' to inspect immediate figures.</span>
-        <div id="columnsDetected" class="flex gap-2"></div>
-      </div>
-    </section>
-
-    <!-- EXECUTIVE METRICS KPI RIBBON -->
-    <section id="kpiRibbon" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-      <div class="bg-[#0D1424] border border-slate-800 p-4 rounded-xl print-card">
+    <!-- EXECUTIVE METRICS KPI RIBBON (4 BASIC KPIS) -->
+    <section id="kpiRibbon" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="bg-[#0D1424] border border-slate-800 p-4 rounded-xl">
         <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Current MRR</div>
         <div id="kpiCurrentMrr" class="text-xl font-bold font-mono text-white mt-1">$0.00</div>
         <div id="kpiMrrGrowth" class="text-[11px] text-slate-500 mt-0.5">-- MoM growth</div>
       </div>
 
-      <div class="bg-[#0D1424] border border-slate-800 p-4 rounded-xl print-card">
+      <div class="bg-[#0D1424] border border-slate-800 p-4 rounded-xl">
         <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Net Retention (NRR)</div>
         <div id="kpiNrr" class="text-xl font-bold font-mono text-sky-400 mt-1">0.0%</div>
         <div class="text-[11px] text-slate-500 mt-0.5">>100% signifies expansion</div>
       </div>
 
-      <div class="bg-[#0D1424] border border-slate-800 p-4 rounded-xl print-card">
+      <div class="bg-[#0D1424] border border-slate-800 p-4 rounded-xl">
         <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Gross Retention (GRR)</div>
         <div id="kpiGrr" class="text-xl font-bold font-mono text-slate-200 mt-1">0.0%</div>
         <div class="text-[11px] text-slate-500 mt-0.5">Excludes expansion MRR</div>
       </div>
 
-      <div class="bg-[#0D1424] border border-slate-800 p-4 rounded-xl print-card">
-        <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">SaaS Quick Ratio</div>
-        <div id="kpiQuickRatio" class="text-xl font-bold font-mono text-indigo-400 mt-1">0.00</div>
-        <div class="text-[11px] text-slate-500 mt-0.5">>4.0 is top-quartile SaaS</div>
-      </div>
-
-      <div class="bg-[#0D1424] border border-slate-800 p-4 rounded-xl print-card">
+      <div class="bg-[#0D1424] border border-slate-800 p-4 rounded-xl">
         <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Active Customers</div>
         <div id="kpiActiveLogos" class="text-xl font-bold font-mono text-slate-200 mt-1">0</div>
         <div id="kpiLogoChurn" class="text-[11px] text-slate-500 mt-0.5">0.0% logo churn</div>
       </div>
-
-      <div class="bg-[#0D1424] border border-slate-800 p-4 rounded-xl print-card">
-        <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Estimated LTV / ARPU</div>
-        <div id="kpiLtvArpu" class="text-xl font-bold font-mono text-sky-400 mt-1">$0 / $0</div>
-        <div class="text-[11px] text-slate-500 mt-0.5">Normalized lifetime value</div>
-      </div>
     </section>
 
-    <!-- HEATMAP TOGGLES & VIEWS -->
-    <section class="bg-[#0D1424] border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4 print-card">
+    <!-- HEATMAP MATRIX SECTION -->
+    <section class="bg-[#0D1424] border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div>
           <h2 class="text-base font-bold text-white tracking-tight flex items-center gap-2">
@@ -209,11 +139,9 @@
           <p class="text-xs text-slate-400">Longitudinal customer retention from origination month (Month 0) through Month 12+</p>
         </div>
 
-        <div class="no-print flex items-center gap-2">
+        <div class="flex items-center gap-2">
           <div class="inline-flex rounded-lg bg-slate-900 p-0.5 border border-slate-800 text-xs">
-            <button id="viewPercentBtn" onclick="switchMatrixMode('percentage')" class="px-2.5 py-1 rounded-md bg-slate-800 text-white font-medium shadow-sm transition">Retention %</button>
-            <button id="viewRevenueBtn" onclick="switchMatrixMode('revenue')" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition">Revenue ($)</button>
-            <button id="viewCountsBtn" onclick="switchMatrixMode('counts')" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition">Logo Count</button>
+            <button id="viewPercentBtn" class="px-2.5 py-1 rounded-md bg-slate-800 text-white font-medium shadow-sm transition">Retention %</button>
           </div>
         </div>
       </div>
@@ -243,7 +171,7 @@
           <tbody id="cohortTableBody" class="divide-y divide-slate-800/50 text-slate-300">
             <tr>
               <td colspan="15" class="py-12 text-center text-slate-500 font-sans">
-                Awaiting transaction data. Upload your CSV ledger or trigger the demo benchmark above.
+                Awaiting transaction data. Trigger the demo benchmark above.
               </td>
             </tr>
           </tbody>
@@ -267,107 +195,14 @@
       </div>
     </section>
 
-    <!-- MRR WATERFALL BREAKDOWN & REVENUE RETENTION -->
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      
-      <!-- Waterfall Chart -->
-      <div class="bg-[#0D1424] border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4 flex flex-col justify-between print-card">
-        <div>
-          <div class="flex items-center justify-between">
-            <h2 class="text-base font-bold text-white tracking-tight flex items-center gap-2">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg>
-              MRR Movement Waterfall
-            </h2>
-            <span class="text-xs font-mono text-slate-400">Monthly Dynamics</span>
-          </div>
-          <p class="text-xs text-slate-400 mt-1">Audit of New, Expansion, Contraction, and Churn MRR flows.</p>
-        </div>
-
-        <div class="relative h-64 w-full">
-          <canvas id="waterfallCanvas"></canvas>
-        </div>
-
-        <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-800/80 text-center font-mono text-xs">
-          <div class="bg-slate-900/60 p-2 rounded-lg">
-            <div class="text-[10px] text-slate-500">NEW MRR</div>
-            <div id="statNewMrr" class="font-bold text-emerald-400 mt-0.5">$0</div>
-          </div>
-          <div class="bg-slate-900/60 p-2 rounded-lg">
-            <div class="text-[10px] text-slate-500">EXPANSION</div>
-            <div id="statExpansionMrr" class="font-bold text-sky-400 mt-0.5">$0</div>
-          </div>
-          <div class="bg-slate-900/60 p-2 rounded-lg">
-            <div class="text-[10px] text-slate-500">CONTRACTION</div>
-            <div id="statContractionMrr" class="font-bold text-indigo-400 mt-0.5">-$0</div>
-          </div>
-          <div class="bg-slate-900/60 p-2 rounded-lg">
-            <div class="text-[10px] text-slate-500">CHURN</div>
-            <div id="statChurnMrr" class="font-bold text-rose-500 mt-0.5">-$0</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cohort Retention Decay Curve -->
-      <div class="bg-[#0D1424] border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4 flex flex-col justify-between print-card">
-        <div>
-          <div class="flex items-center justify-between">
-            <h2 class="text-base font-bold text-white tracking-tight flex items-center gap-2">
-              <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"/></svg>
-              Retention Decay Curve by Vintage
-            </h2>
-            <span class="text-xs font-mono text-slate-400">M0 - M12 Curves</span>
-          </div>
-          <p class="text-xs text-slate-400 mt-1">Cross-cohort benchmark: comparing older vs recently acquired vintage behavior.</p>
-        </div>
-
-        <div class="relative h-64 w-full">
-          <canvas id="retentionDecayCanvas"></canvas>
-        </div>
-
-        <div class="flex items-center justify-between pt-2 border-t border-slate-800/80 text-xs text-slate-400">
-          <span>Weighted Average Month 3 Retention: <strong id="weightedM3" class="text-sky-400 font-mono">0.0%</strong></span>
-          <span>Weighted Month 12: <strong id="weightedM12" class="text-sky-400 font-mono">0.0%</strong></span>
-        </div>
-      </div>
-    </section>
-
-    <!-- DUE DILIGENCE AUDIT TABLE & HEALTH CHECK -->
-    <section class="bg-[#0D1424] border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3 print-card">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-base font-bold text-white tracking-tight flex items-center gap-2">
-            <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
-            M&A / Fractional CFO Due Diligence Audit Findings
-          </h2>
-          <p class="text-xs text-slate-400">Real-time flags calculated across historical revenue trends</p>
-        </div>
-        <span id="auditBadge" class="text-xs font-semibold px-2.5 py-1 rounded bg-slate-900 text-slate-300 border border-slate-700">Audit Status: Ready</span>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 text-xs">
-        <div id="ddNetExpansion" class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-          <div class="font-semibold text-slate-200">Expansion vs Contraction Health</div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">Assessing if expansion from existing customers covers lost MRR.</div>
-        </div>
-        <div id="ddChurnStability" class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-          <div class="font-semibold text-slate-200">Early Churn Plateau (M1-M3)</div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">Detects drop-off cliffs within the onboarding window.</div>
-        </div>
-        <div id="ddQuickRatioAssessment" class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-          <div class="font-semibold text-slate-200">Growth Efficiency (Quick Ratio)</div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">Evaluates new dollar added per dollar leaked.</div>
-        </div>
-      </div>
-    </section>
-
   </main>
 
   <!-- FOOTER -->
-  <footer class="no-print border-t border-slate-800 bg-slate-950 mt-12 py-6 px-4 lg:px-8 text-xs text-slate-500">
+  <footer class="border-t border-slate-800 bg-slate-950 mt-12 py-6 px-4 lg:px-8 text-xs text-slate-500">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <div>
-        <strong class="text-slate-300">CohortLens - Client-Side SaaS Retention & MRR Engine</strong>
-        <p class="text-slate-500 text-[11px] mt-0.5">Built by CohortLens Engineering. Zero telemetry, zero external APIs.</p>
+        <strong class="text-slate-300">CohortLens - Client-Side SaaS Retention Engine (Free Demo Edition)</strong>
+        <p class="text-slate-500 text-[11px] mt-0.5">Built by AutoMicro Labs. Zero telemetry, zero external APIs.</p>
       </div>
       <div class="flex items-center gap-4">
         <button onclick="openModal('readmeModal')" class="hover:text-sky-400 transition">Technical Guide</button>
@@ -376,55 +211,6 @@
       </div>
     </div>
   </footer>
-
-  <!-- UPGRADE TO PRO MODAL (LOCKED DELIVERABLES) -->
-  <div id="upgradeModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-[#0D1424] border border-sky-500/40 w-full max-w-lg rounded-2xl flex flex-col overflow-hidden shadow-2xl relative">
-      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/80">
-        <div class="flex items-center gap-2">
-          <span class="text-base">🔒</span>
-          <h3 class="font-bold text-white text-base">Upgrade to CohortLens Pro</h3>
-        </div>
-        <button onclick="closeModal('upgradeModal')" class="text-slate-400 hover:text-white text-lg font-mono">&times;</button>
-      </div>
-      
-      <div class="p-6 space-y-4 text-xs text-slate-300 leading-relaxed font-sans">
-        <p class="text-sm text-slate-200 font-semibold">
-          You have discovered a Pro deliverable feature.
-        </p>
-        <p class="text-slate-400">
-          The interactive visualization and in-browser calculation engine remain fully accessible in the Community Lite edition. To export raw audit matrix files and print investor-ready documentation, upgrade to the complete Pro Edition.
-        </p>
-
-        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 space-y-2">
-          <div class="text-[11px] font-bold text-sky-400 uppercase tracking-wide">Included in Pro Edition:</div>
-          <ul class="space-y-1.5 text-slate-300">
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-              <span><strong>Full Cohort Matrix Export:</strong> Download comprehensive unclipped CSV matrices for BI tools.</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-              <span><strong>Investor Audit Print Mode:</strong> Clean high-contrast styling for due diligence dossiers.</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-              <span><strong>Extended Cohort Windows:</strong> Multi-year vintage comparisons without limitations.</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="px-6 py-4 border-t border-slate-800 bg-slate-950/80 flex items-center justify-between gap-3">
-        <button onclick="closeModal('upgradeModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition">
-          Close
-        </button>
-        <a href="https://bobservice.gumroad.com/l/cohortlens-client-side-saas-retention-mrr-engine?utm_source=github" target="_blank" rel="noopener noreferrer" class="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 text-slate-950 shadow-lg shadow-sky-500/20 transition flex items-center gap-1.5">
-          <span>Get CohortLens Pro &rarr;</span>
-        </a>
-      </div>
-    </div>
-  </div>
 
   <!-- README MODAL -->
   <div id="readmeModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -436,29 +222,18 @@
       <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 leading-relaxed font-mono">
         <div>
           <h4 class="text-sky-400 font-bold text-sm">Product Overview</h4>
-          <p class="mt-1 font-sans">CohortLens is an enterprise-grade client-side analytics processor built specifically for SaaS founders, Fractional CFOs, and M&A diligence auditors. It transforms unnormalized transaction ledgers into standard N-Month cohort retention heatmaps and monthly MRR waterfalls without connecting bank credentials or third-party webhooks.</p>
-        </div>
-        <div>
-          <h4 class="text-sky-400 font-bold text-sm">Accepted Ledger Format</h4>
-          <p class="mt-1 font-sans">You can drag and drop exports directly from Stripe (Charges/Invoices), Chargebee, Paddle, or custom warehouse extracts. CohortLens looks for:</p>
-          <ul class="list-disc list-inside mt-1 font-sans text-slate-400 space-y-1">
-            <li><strong>Customer Identifier:</strong> e.g., <code class="text-sky-300">customer_id</code>, <code class="text-sky-300">email</code>, <code class="text-sky-300">user_id</code></li>
-            <li><strong>Timestamp / Date:</strong> e.g., <code class="text-sky-300">created_at</code>, <code class="text-sky-300">date</code> (ISO 8601 or YYYY-MM-DD preferred)</li>
-            <li><strong>Amount / MRR:</strong> e.g., <code class="text-sky-300">amount</code>, <code class="text-sky-300">mrr</code>, <code class="text-sky-300">value</code> (normalized to dollars)</li>
-          </ul>
+          <p class="mt-1 font-sans">CohortLens is a client-side analytics processor built specifically for SaaS founders and financial auditors. It transforms unnormalized transaction ledgers into standard N-Month cohort retention heatmaps.</p>
         </div>
         <div>
           <h4 class="text-sky-400 font-bold text-sm">Metric Methodology</h4>
           <ul class="list-disc list-inside mt-1 font-sans text-slate-400 space-y-1">
             <li><strong>Cohort Month:</strong> First timestamp where positive revenue is recorded for a distinct customer.</li>
             <li><strong>Month N Retention %:</strong> Distinct active customers in month N divided by initial cohort size.</li>
-            <li><strong>MRR Waterfall:</strong> Segregates New (first ever), Expansion (positive delta), Contraction (negative delta), and Churn ($0 after active).</li>
-            <li><strong>SaaS Quick Ratio:</strong> (New MRR + Expansion MRR) / (Contraction MRR + Churn MRR).</li>
           </ul>
         </div>
         <div>
           <h4 class="text-sky-400 font-bold text-sm">Zero Cloud Data Leakage</h4>
-          <p class="mt-1 font-sans">This application operates purely inside client memory. Once the page is loaded, you can disconnect your internet and execute complex multi-thousand row audits offline.</p>
+          <p class="mt-1 font-sans">This application operates purely inside client memory. Once the page is loaded, calculations execute offline inside your web browser.</p>
         </div>
       </div>
       <div class="px-6 py-3 border-t border-slate-800 bg-slate-950/60 flex justify-end">
@@ -477,15 +252,15 @@
       <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 leading-relaxed font-sans">
         <div class="border-l-2 border-sky-500 pl-3 py-1">
           <strong class="text-white">NOT FINANCIAL, AUDITING, OR INVESTMENT ADVICE:</strong>
-          <p class="mt-1 text-slate-400">CohortLens is a computational visualization tool provided by CohortLens Engineering for informational and operational benchmarking purposes only. It does not constitute formal financial accounting, GAAP/IFRS auditing, or investment recommendations.</p>
+          <p class="mt-1 text-slate-400">CohortLens is a computational visualization tool provided for informational and operational benchmarking purposes only. It does not constitute formal financial accounting, GAAP/IFRS auditing, or investment recommendations.</p>
         </div>
         <div>
           <strong class="text-white">DATA INTEGRITY & PRIVACY STATEMENT:</strong>
-          <p class="mt-1 text-slate-400">CohortLens does not store, upload, copy, or transmit any financial or customer personally identifiable information (PII) to CohortLens or external third-party servers. All data processing occurs strictly in volatile client memory inside your web browser. You maintain sole ownership and responsibility for compliance with applicable data protection laws (including GDPR, CCPA, and SOC2) when importing datasets.</p>
+          <p class="mt-1 text-slate-400">CohortLens does not store, upload, copy, or transmit any financial or customer personally identifiable information (PII) to external third-party servers. All data processing occurs strictly in volatile client memory inside your web browser.</p>
         </div>
         <div>
           <strong class="text-white">LIMITATION OF LIABILITY:</strong>
-          <p class="mt-1 text-slate-400">Under no circumstances shall CohortLens, its creators, or contributors be held liable for any investment decisions, valuation adjustments, tax audits, merger & acquisition disputes, or business errors resulting from the use of calculations generated by this software.</p>
+          <p class="mt-1 text-slate-400">Under no circumstances shall the creators or contributors be held liable for any investment decisions, valuation adjustments, or business errors resulting from the use of calculations generated by this software.</p>
         </div>
       </div>
       <div class="px-6 py-3 border-t border-slate-800 bg-slate-950/60 flex justify-end">
@@ -500,16 +275,10 @@
     let monthlyCustomerMap = new Map(); // monthKey -> Map(customerId -> MRR)
     let customerCohortMap = new Map();  // customerId -> firstMonthKey
     let cohortMatrixData = [];          // Computed matrix rows
-    let mrrWaterfallData = [];          // Computed waterfall months
-    let matrixDisplayMode = 'percentage'; // 'percentage' | 'revenue' | 'counts'
-    let waterfallChartInstance = null;
-    let decayChartInstance = null;
 
     // Dom Elements
-    const csvFileInput = document.getElementById('csvFileInput');
     const loadDemoBtn = document.getElementById('loadDemoBtn');
     const cohortTableBody = document.getElementById('cohortTableBody');
-    const fileSummary = document.getElementById('fileSummary');
 
     // UI Modal Helpers
     function openModal(id) {
@@ -521,37 +290,16 @@
 
     // Modal click out listener
     window.addEventListener('click', (e) => {
-      ['readmeModal', 'legalModal', 'upgradeModal'].forEach(id => {
+      ['readmeModal', 'legalModal'].forEach(id => {
         const modal = document.getElementById(id);
         if (e.target === modal) closeModal(id);
       });
     });
 
-    // File Input Listener
-    csvFileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      fileSummary.textContent = `Parsing "${file.name}" (${(file.size / 1024).toFixed(1)} KB)...`;
-      
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        dynamicTyping: true,
-        complete: function(results) {
-          processRawCsvData(results.data, file.name);
-        },
-        error: function(err) {
-          alert('CSV parsing error: ' + err.message);
-          fileSummary.textContent = 'Error parsing file.';
-        }
-      });
-    });
-
     // Load Micro-SaaS Demo Button
     loadDemoBtn.addEventListener('click', () => {
-      fileSummary.textContent = 'Generating 36-month B2B Micro-SaaS benchmark dataset...';
       const demoData = generateSyntheticSaaSData();
-      processRawCsvData(demoData, 'B2B_MicroSaaS_Demo_Ledger.csv');
+      processRawCsvData(demoData);
     });
 
     // Generate Synthetic Real-World B2B Micro-SaaS Ledger
@@ -616,32 +364,14 @@
     }
 
     // Process Ledger Rows
-    function processRawCsvData(rows, filename) {
-      if (!rows || rows.length === 0) {
-        alert('The uploaded file contains no data.');
-        return;
-      }
+    function processRawCsvData(rows) {
+      if (!rows || rows.length === 0) return;
 
-      // Column Auto-Detection
-      const sample = rows[0];
-      const keys = Object.keys(sample);
-
+      const keys = Object.keys(rows[0]);
       const custKey = keys.find(k => /customer|user|client|account|id/i.test(k)) || keys[0];
       const dateKey = keys.find(k => /date|time|created|period|timestamp/i.test(k)) || keys[1];
       const amountKey = keys.find(k => /amount|mrr|revenue|value|price|charge/i.test(k)) || keys[2];
 
-      if (!custKey || !dateKey || !amountKey) {
-        alert('Could not automatically map Customer, Date, and Amount columns. Please ensure CSV headers match.');
-        return;
-      }
-
-      document.getElementById('columnsDetected').innerHTML = `
-        <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">Customer: <b class="text-sky-400 font-mono">${custKey}</b></span>
-        <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">Date: <b class="text-sky-400 font-mono">${dateKey}</b></span>
-        <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">Amount: <b class="text-sky-400 font-mono">${amountKey}</b></span>
-      `;
-
-      // Clean and normalize transactions
       const normalized = [];
       for (let i = 0; i < rows.length; i++) {
         const r = rows[i];
@@ -649,8 +379,7 @@
         const dStr = String(r[dateKey] || '').trim();
         let amt = parseFloat(String(r[amountKey] || '0').replace(/[^0-9.-]+/g, ""));
 
-        if (!cid || !dStr || isNaN(amt)) continue;
-        if (amt < 0) continue; // Exclude negative refunds or handle separately
+        if (!cid || !dStr || isNaN(amt) || amt < 0) continue;
 
         const parsedDate = new Date(dStr);
         if (isNaN(parsedDate.getTime())) continue;
@@ -665,14 +394,8 @@
         });
       }
 
-      if (normalized.length === 0) {
-        alert('No valid billing records could be parsed with valid dates and amounts.');
-        return;
-      }
+      if (normalized.length === 0) return;
 
-      fileSummary.textContent = `Audited ${normalized.length.toLocaleString()} records from ${filename}`;
-
-      // Group and Calculate Core Engine Data
       computeCoreSaaSEngine(normalized);
     }
 
@@ -681,10 +404,8 @@
       monthlyCustomerMap.clear();
       customerCohortMap.clear();
 
-      // Sort chronological
       transactions.sort((a, b) => a.timestamp - b.timestamp);
 
-      // Aggregate Monthly Customer Revenue
       const allMonthsSet = new Set();
       for (const t of transactions) {
         allMonthsSet.add(t.monthKey);
@@ -695,7 +416,6 @@
         const existing = mMap.get(t.customerId) || 0;
         mMap.set(t.customerId, existing + t.amount);
 
-        // Assign cohort if not seen
         if (!customerCohortMap.has(t.customerId)) {
           customerCohortMap.set(t.customerId, t.monthKey);
         }
@@ -703,23 +423,14 @@
 
       const sortedMonths = Array.from(allMonthsSet).sort();
 
-      // 1. Build Cohort Retention Matrix Data
       buildCohortMatrix(sortedMonths);
-
-      // 2. Build MRR Waterfall Breakdown
-      buildMrrWaterfall(sortedMonths);
-
-      // 3. Render Visual Components
       renderCohortTable();
-      renderWaterfallChart();
-      renderDecayChart();
-      renderKpisAndDueDiligence(sortedMonths);
+      renderKpis(sortedMonths);
     }
 
     function buildCohortMatrix(sortedMonths) {
       cohortMatrixData = [];
 
-      // Group cohorts
       const cohorts = {};
       for (const [custId, cohortMonth] of customerCohortMap.entries()) {
         if (!cohorts[cohortMonth]) cohorts[cohortMonth] = [];
@@ -733,7 +444,6 @@
         const cohortStartIndex = sortedMonths.indexOf(cMonth);
         const cohortSize = cohortMembers.length;
 
-        // Initial Month 0 Revenue
         let initialRevenue = 0;
         const m0Map = monthlyCustomerMap.get(cMonth);
         cohortMembers.forEach(cid => {
@@ -742,11 +452,10 @@
 
         const intervals = [];
 
-        // Track up to 13 intervals (M0 to M12)
         for (let mOffset = 0; mOffset <= 12; mOffset++) {
           const targetMonthIdx = cohortStartIndex + mOffset;
           if (targetMonthIdx >= sortedMonths.length) {
-            intervals.push(null); // Month has not occurred yet
+            intervals.push(null);
             continue;
           }
 
@@ -788,59 +497,6 @@
       }
     }
 
-    function buildMrrWaterfall(sortedMonths) {
-      mrrWaterfallData = [];
-
-      for (let i = 0; i < sortedMonths.length; i++) {
-        const currentMonth = sortedMonths[i];
-        const prevMonth = i > 0 ? sortedMonths[i - 1] : null;
-
-        const currMap = monthlyCustomerMap.get(currentMonth) || new Map();
-        const prevMap = prevMonth ? (monthlyCustomerMap.get(prevMonth) || new Map()) : new Map();
-
-        let newMrr = 0;
-        let expansionMrr = 0;
-        let contractionMrr = 0;
-        let churnMrr = 0;
-        let existingMrr = 0;
-
-        // Evaluate all current customers
-        currMap.forEach((currAmt, custId) => {
-          const prevAmt = prevMap.get(custId) || 0;
-
-          if (prevAmt === 0) {
-            // Check if brand new or reactivation
-            newMrr += currAmt;
-          } else if (currAmt > prevAmt) {
-            expansionMrr += (currAmt - prevAmt);
-          } else if (currAmt < prevAmt) {
-            contractionMrr += (prevAmt - currAmt);
-          }
-          existingMrr += currAmt;
-        });
-
-        // Evaluate churn (was in prevMap but not in currMap)
-        prevMap.forEach((prevAmt, custId) => {
-          const currAmt = currMap.get(custId) || 0;
-          if (currAmt === 0) {
-            churnMrr += prevAmt;
-          }
-        });
-
-        const netNew = (newMrr + expansionMrr) - (contractionMrr + churnMrr);
-
-        mrrWaterfallData.push({
-          month: currentMonth,
-          newMrr,
-          expansionMrr,
-          contractionMrr,
-          churnMrr,
-          totalMrr: existingMrr,
-          netNewMrr: netNew
-        });
-      }
-    }
-
     // Render Matrix HTML Table
     function renderCohortTable() {
       if (cohortMatrixData.length === 0) return;
@@ -849,12 +505,7 @@
       cohortMatrixData.forEach((row) => {
         html += `<tr class="hover:bg-slate-800/40 transition">`;
         html += `<td class="py-2.5 px-3 font-semibold text-slate-200 sticky left-0 bg-[#0D1424] z-10 border-r border-slate-800">${row.cohortMonth}</td>`;
-        
-        // Base Size Display
-        const baseDisplay = matrixDisplayMode === 'revenue' 
-          ? `$${Math.round(row.initialRevenue).toLocaleString()}`
-          : `${row.size} logos`;
-        html += `<td class="py-2.5 px-3 text-slate-400 font-medium">${baseDisplay}</td>`;
+        html += `<td class="py-2.5 px-3 text-slate-400 font-medium">${row.size} logos</td>`;
 
         for (let m = 0; m <= 12; m++) {
           const cell = row.intervals[m];
@@ -863,21 +514,9 @@
             continue;
           }
 
-          let cellText = '';
-          let pct = 0;
+          const pct = cell.countPercent;
+          const cellText = `${Math.round(pct)}%`;
 
-          if (matrixDisplayMode === 'percentage') {
-            pct = cell.countPercent;
-            cellText = `${Math.round(pct)}%`;
-          } else if (matrixDisplayMode === 'revenue') {
-            pct = cell.revPercent;
-            cellText = `$${Math.round(cell.activeRevenue).toLocaleString()}`;
-          } else {
-            pct = cell.countPercent;
-            cellText = cell.activeCount;
-          }
-
-          // Electric Cyan & Indigo Heat Scale
           let bgStyle = '';
           let textStyle = 'text-slate-300';
 
@@ -911,334 +550,55 @@
       cohortTableBody.innerHTML = html;
     }
 
-    // Switch Table Display Mode
-    function switchMatrixMode(mode) {
-      matrixDisplayMode = mode;
-      
-      const buttons = {
-        percentage: document.getElementById('viewPercentBtn'),
-        revenue: document.getElementById('viewRevenueBtn'),
-        counts: document.getElementById('viewCountsBtn')
-      };
-
-      Object.keys(buttons).forEach(key => {
-        if (key === mode) {
-          buttons[key].className = 'px-2.5 py-1 rounded-md bg-slate-800 text-white font-medium shadow-sm transition';
-        } else {
-          buttons[key].className = 'px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition';
-        }
-      });
-
-      renderCohortTable();
-    }
-
-    // Render Waterfall Chart via Chart.js
-    function renderWaterfallChart() {
-      if (mrrWaterfallData.length === 0) return;
-
-      const labels = mrrWaterfallData.map(d => d.month);
-      const newMrr = mrrWaterfallData.map(d => d.newMrr);
-      const expansionMrr = mrrWaterfallData.map(d => d.expansionMrr);
-      const contractionMrr = mrrWaterfallData.map(d => -d.contractionMrr);
-      const churnMrr = mrrWaterfallData.map(d => -d.churnMrr);
-      const netNew = mrrWaterfallData.map(d => d.netNewMrr);
-
-      const ctx = document.getElementById('waterfallCanvas').getContext('2d');
-      if (waterfallChartInstance) waterfallChartInstance.destroy();
-
-      waterfallChartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'New MRR',
-              data: newMrr,
-              backgroundColor: '#10B981',
-              stack: 'flow'
-            },
-            {
-              label: 'Expansion MRR',
-              data: expansionMrr,
-              backgroundColor: '#0EA5E9',
-              stack: 'flow'
-            },
-            {
-              label: 'Contraction MRR',
-              data: contractionMrr,
-              backgroundColor: '#818CF8',
-              stack: 'flow'
-            },
-            {
-              label: 'Churn MRR',
-              data: churnMrr,
-              backgroundColor: '#F43F5E',
-              stack: 'flow'
-            },
-            {
-              label: 'Net New MRR',
-              data: netNew,
-              type: 'line',
-              borderColor: '#FFFFFF',
-              borderWidth: 2,
-              pointRadius: 2,
-              fill: false
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'top',
-              labels: { color: '#94A3B8', boxWidth: 10, font: { size: 10 } }
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  return `${context.dataset.label}: $${Math.abs(context.parsed.y).toLocaleString()}`;
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              stacked: true,
-              ticks: { color: '#64748B', font: { size: 9 }, maxRotation: 45 },
-              grid: { display: false }
-            },
-            y: {
-              stacked: true,
-              ticks: {
-                color: '#64748B',
-                font: { size: 10 },
-                callback: (val) => `$${val >= 1000 ? (val/1000) + 'k' : val}`
-              },
-              grid: { color: '#1E293B' }
-            }
-          }
-        }
-      });
-
-      // Update Quick Stats in container
-      const latest = mrrWaterfallData[mrrWaterfallData.length - 1];
-      document.getElementById('statNewMrr').textContent = `$${Math.round(latest.newMrr).toLocaleString()}`;
-      document.getElementById('statExpansionMrr').textContent = `$${Math.round(latest.expansionMrr).toLocaleString()}`;
-      document.getElementById('statContractionMrr').textContent = `-$${Math.round(latest.contractionMrr).toLocaleString()}`;
-      document.getElementById('statChurnMrr').textContent = `-$${Math.round(latest.churnMrr).toLocaleString()}`;
-    }
-
-    // Render Retention Decay Curve
-    function renderDecayChart() {
-      if (cohortMatrixData.length === 0) return;
-
-      const ctx = document.getElementById('retentionDecayCanvas').getContext('2d');
-      if (decayChartInstance) decayChartInstance.destroy();
-
-      // Show up to 5 significant cohorts
-      const sampleCohorts = cohortMatrixData.slice(0, 5);
-      const datasets = [];
-      const colors = ['#0EA5E9', '#38BDF8', '#6366F1', '#818CF8', '#10B981'];
-
-      sampleCohorts.forEach((c, idx) => {
-        const points = [];
-        for (let m = 0; m <= 12; m++) {
-          const item = c.intervals[m];
-          points.push(item ? item.countPercent : null);
-        }
-
-        datasets.push({
-          label: c.cohortMonth,
-          data: points,
-          borderColor: colors[idx % colors.length],
-          borderWidth: 2,
-          tension: 0.25,
-          pointRadius: 2.5
-        });
-      });
-
-      decayChartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['M0', 'M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12'],
-          datasets: datasets
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'top',
-              labels: { color: '#94A3B8', boxWidth: 10, font: { size: 10 } }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: '#64748B', font: { size: 10 } },
-              grid: { color: '#1E293B' }
-            },
-            y: {
-              min: 0,
-              max: 100,
-              ticks: {
-                color: '#64748B',
-                callback: (val) => `${val}%`
-              },
-              grid: { color: '#1E293B' }
-            }
-          }
-        }
-      });
-    }
-
-    // Executive KPIs and Due Diligence Flags
-    function renderKpisAndDueDiligence(sortedMonths) {
-      if (mrrWaterfallData.length === 0) return;
+    // Basic Executive KPIs
+    function renderKpis(sortedMonths) {
+      if (sortedMonths.length === 0) return;
 
       const latestMonth = sortedMonths[sortedMonths.length - 1];
-      const latestWaterfall = mrrWaterfallData[mrrWaterfallData.length - 1];
-      const prevWaterfall = mrrWaterfallData.length > 1 ? mrrWaterfallData[mrrWaterfallData.length - 2] : latestWaterfall;
-
-      // Current MRR & Growth
-      const currentMrr = latestWaterfall.totalMrr;
-      document.getElementById('kpiCurrentMrr').textContent = `$${Math.round(currentMrr).toLocaleString()}`;
-
-      const momGrowth = prevWaterfall.totalMrr > 0 
-        ? (((currentMrr - prevWaterfall.totalMrr) / prevWaterfall.totalMrr) * 100).toFixed(1)
-        : '0.0';
-      document.getElementById('kpiMrrGrowth').innerHTML = `${momGrowth >= 0 ? '+' : ''}${momGrowth}% MoM net change`;
-
-      // Active Customers
       const activeCustMap = monthlyCustomerMap.get(latestMonth) || new Map();
       const activeCount = activeCustMap.size;
       document.getElementById('kpiActiveLogos').textContent = activeCount.toLocaleString();
 
-      // Quick Ratio = (New + Expansion) / (Churn + Contraction)
-      const churnLeakage = latestWaterfall.churnMrr + latestWaterfall.contractionMrr;
-      const growthAdditions = latestWaterfall.newMrr + latestWaterfall.expansionMrr;
-      const quickRatio = churnLeakage > 0 ? (growthAdditions / churnLeakage).toFixed(2) : (growthAdditions > 0 ? '9.99' : '1.00');
-      document.getElementById('kpiQuickRatio').textContent = quickRatio;
+      // Current MRR calculation
+      let currentMrr = 0;
+      activeCustMap.forEach(amt => { currentMrr += amt; });
+      document.getElementById('kpiCurrentMrr').textContent = `$${Math.round(currentMrr).toLocaleString()}`;
 
-      // ARPU
-      const arpu = activeCount > 0 ? Math.round(currentMrr / activeCount) : 0;
+      // MoM Net Change
+      let prevMrr = 0;
+      if (sortedMonths.length > 1) {
+        const prevMonth = sortedMonths[sortedMonths.length - 2];
+        const prevCustMap = monthlyCustomerMap.get(prevMonth) || new Map();
+        prevCustMap.forEach(amt => { prevMrr += amt; });
+      }
+      const momGrowth = prevMrr > 0 ? (((currentMrr - prevMrr) / prevMrr) * 100).toFixed(1) : '0.0';
+      document.getElementById('kpiMrrGrowth').textContent = `${momGrowth >= 0 ? '+' : ''}${momGrowth}% MoM net change`;
 
       // NRR & GRR Weighted estimation from cohort matrix
       let totalM0Rev = 0;
       let totalM12Rev = 0;
-      let m3Sum = 0;
-      let m3Count = 0;
-      let m12Sum = 0;
-      let m12Count = 0;
 
       cohortMatrixData.forEach(row => {
-        if (row.intervals[3]) {
-          m3Sum += row.intervals[3].countPercent;
-          m3Count++;
-        }
         if (row.intervals[12]) {
-          m12Sum += row.intervals[12].countPercent;
-          m12Count++;
           totalM0Rev += row.initialRevenue;
           totalM12Rev += row.intervals[12].activeRevenue;
         }
       });
 
-      const avgM3 = m3Count > 0 ? (m3Sum / m3Count).toFixed(1) : '--';
-      const avgM12 = m12Count > 0 ? (m12Sum / m12Count).toFixed(1) : '--';
-
-      document.getElementById('weightedM3').textContent = avgM3 === '--' ? '--%' : `${avgM3}%`;
-      document.getElementById('weightedM12').textContent = avgM12 === '--' ? '--%' : `${avgM12}%`;
-
-      // NRR calculation
       const computedNrr = totalM0Rev > 0 ? ((totalM12Rev / totalM0Rev) * 100).toFixed(1) : '103.5';
       const computedGrr = Math.min(parseFloat(computedNrr), 92.4).toFixed(1);
 
       document.getElementById('kpiNrr').textContent = `${computedNrr}%`;
       document.getElementById('kpiGrr').textContent = `${computedGrr}%`;
 
-      // Est LTV = ARPU / Logo Churn
-      const approxMonthlyChurnPct = Math.max(0.015, (latestWaterfall.churnMrr / (currentMrr || 1)));
-      const estimatedLtv = Math.round(arpu / approxMonthlyChurnPct);
-      document.getElementById('kpiLtvArpu').textContent = `$${estimatedLtv.toLocaleString()} / $${arpu}`;
-      document.getElementById('kpiLogoChurn').textContent = `${(approxMonthlyChurnPct * 100).toFixed(1)}% monthly churn`;
-
-      // Due Diligence Audit Flags
-      const ddNetExpansion = document.getElementById('ddNetExpansion');
-      if (latestWaterfall.expansionMrr >= latestWaterfall.contractionMrr) {
-        ddNetExpansion.innerHTML = `
-          <div class="font-semibold text-emerald-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Net Expansion Positive
-          </div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">
-            Expansion MRR ($${Math.round(latestWaterfall.expansionMrr).toLocaleString()}) outpaces Contraction MRR ($${Math.round(latestWaterfall.contractionMrr).toLocaleString()}). Indicates strong account expansion motion.
-          </div>`;
-      } else {
-        ddNetExpansion.innerHTML = `
-          <div class="font-semibold text-rose-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-rose-500"></span> Contraction Warning
-          </div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">
-            Existing accounts downgraded faster than upsells. Potential tier dissatisfaction or seat reduction.
-          </div>`;
+      // Monthly logo churn estimation
+      let prevActiveCount = 0;
+      if (sortedMonths.length > 1) {
+        const prevMonth = sortedMonths[sortedMonths.length - 2];
+        prevActiveCount = (monthlyCustomerMap.get(prevMonth) || new Map()).size;
       }
-
-      const ddStability = document.getElementById('ddChurnStability');
-      if (avgM3 === '--') {
-        ddStability.innerHTML = `
-          <div class="font-semibold text-sky-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-sky-400"></span> Early-Stage Cohort Window
-          </div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">
-            Fewer than 3 months of longitudinal history available for M3 benchmark.
-          </div>`;
-      } else if (parseFloat(avgM3) > 65) {
-        ddStability.innerHTML = `
-          <div class="font-semibold text-sky-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-sky-400"></span> Healthy Onboarding Retention
-          </div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">
-            Month 3 retention averages ${avgM3}%. Customers find immediate recurring utility during trial-to-renewal conversion.
-          </div>`;
-      } else {
-        ddStability.innerHTML = `
-          <div class="font-semibold text-rose-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-rose-500"></span> Onboarding Cliff Detected
-          </div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">
-            M3 retention is below benchmark (${avgM3}%). Review customer onboarding journey and time-to-value velocity.
-          </div>`;
-      }
-
-      const ddQuickRatio = document.getElementById('ddQuickRatioAssessment');
-      if (parseFloat(quickRatio) >= 4.0) {
-        ddQuickRatio.innerHTML = `
-          <div class="font-semibold text-emerald-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Top-Quartile SaaS Efficiency
-          </div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">
-            Quick Ratio is ${quickRatio}. Adding &gt;the Pro Editionin growth for every the Pro Editionlost to churn. High suitability for venture backing or premium M&A valuation.
-          </div>`;
-      } else if (parseFloat(quickRatio) >= 2.0) {
-        ddQuickRatio.innerHTML = `
-          <div class="font-semibold text-slate-200 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-slate-400"></span> Balanced Growth Profile
-          </div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">
-            Quick Ratio is ${quickRatio}. Steady trajectory; reducing churn would substantially compound enterprise valuation.
-          </div>`;
-      } else {
-        ddQuickRatio.innerHTML = `
-          <div class="font-semibold text-rose-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-rose-500"></span> Leaky Bucket Risk
-          </div>
-          <div class="text-slate-400 mt-1 text-[11px] leading-relaxed">
-            Quick Ratio is ${quickRatio}. MRR loss is eroding customer acquisition spend. Prioritize retention fixes before scaling marketing.
-          </div>`;
-      }
-
-      document.getElementById('auditBadge').textContent = `Audit Status: Active (${sortedMonths.length} Months Verified)`;
-      document.getElementById('auditBadge').className = 'text-xs font-semibold px-2.5 py-1 rounded bg-sky-950 text-sky-300 border border-sky-800';
+      const logoChurnPct = prevActiveCount > 0 ? Math.max(0, ((prevActiveCount - activeCount) / prevActiveCount) * 100).toFixed(1) : '2.5';
+      document.getElementById('kpiLogoChurn').textContent = `${logoChurnPct}% monthly churn`;
     }
 
     // Auto-load benchmark on initial arrival for instantaneous verification
@@ -1246,5 +606,50 @@
       loadDemoBtn.click();
     });
   </script>
+
+<style id="lite-anticopy-shield-css">
+  html, body, body * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }
+  body * { pointer-events: none !important; }
+  button, a, select, summary, input[type="radio"], input[type="checkbox"], [role="tab"], [data-lite-allow], #lite-copy-toast, #lite-copy-toast * { pointer-events: auto !important; }
+  #lite-copy-toast { position: fixed; bottom: 22px; right: 22px; z-index: 999999; background: #0f172a; color: #f8fafc; border: 1px solid #38bdf8; border-radius: 10px; padding: 12px 18px; font-family: system-ui, -apple-system, sans-serif; font-size: 13px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: none; align-items: center; gap: 12px; }
+  #lite-copy-toast a { color: #38bdf8; font-weight: 700; text-decoration: underline; }
+</style>
+<div id="lite-copy-toast">
+  <span>Selection, right-click &amp; copying are disabled in the Free Demo.</span>
+  <a href="https://bobservice.gumroad.com/l/cohortlens-client-side-saas-retention-mrr-engine?utm_source=github" target="_blank" rel="noopener">Get Full Pro Edition &rarr;</a>
+</div>
+<script id="lite-anticopy-shield">
+(function() {
+  var toastTimer = null;
+  function mostrarAviso() {
+    var t = document.getElementById("lite-copy-toast");
+    if (!t) return;
+    t.style.display = "flex";
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { t.style.display = "none"; }, 3600);
+  }
+  document.addEventListener("contextmenu", function(e) { e.preventDefault(); mostrarAviso(); }, true);
+  document.addEventListener("selectstart", function(e) { e.preventDefault(); }, true);
+  document.addEventListener("copy", function(e) { e.preventDefault(); if (e.clipboardData) e.clipboardData.setData("text/plain", "Full Pro Edition: https://bobservice.gumroad.com/l/cohortlens-client-side-saas-retention-mrr-engine?utm_source=github"); mostrarAviso(); }, true);
+  document.addEventListener("cut", function(e) { e.preventDefault(); mostrarAviso(); }, true);
+  document.addEventListener("keydown", function(e) {
+    var ctrl = e.ctrlKey || e.metaKey, key = (e.key || "").toLowerCase();
+    if (e.key === "F12" || (ctrl && (key === "u" || key === "s" || key === "c" || key === "a" || key === "x")) || (ctrl && e.shiftKey && (key === "i" || key === "j" || key === "c"))) { e.preventDefault(); mostrarAviso(); }
+  }, true);
+  var TIPOS = ["", "text", "number", "search", "email", "url", "tel", "password", "date"];
+  function esTexto(el) { return el && (el.tagName === "TEXTAREA" || (el.tagName === "INPUT" && TIPOS.indexOf((el.getAttribute("type") || "").toLowerCase()) !== -1)); }
+  function bloquear() {
+    var cs = document.querySelectorAll("textarea, input");
+    for (var i = 0; i < cs.length; i++) if (esTexto(cs[i])) { cs[i].readOnly = true; cs[i].setAttribute("readonly", "readonly"); }
+  }
+  bloquear();
+  if (window.MutationObserver) new MutationObserver(bloquear).observe(document.documentElement, { childList: true, subtree: true });
+  ["paste", "drop", "dragover", "dragenter", "beforeinput"].forEach(function(n) { document.addEventListener(n, function(e) { e.preventDefault(); if (n === "paste") mostrarAviso(); }, true); });
+  document.addEventListener("keydown", function(e) { if (esTexto(e.target) && e.key !== "Tab") e.preventDefault(); }, true);
+  try { document.execCommand = function() { return false; }; } catch (err) {}
+  try { if (navigator.clipboard) navigator.clipboard.writeText = function() { return Promise.reject(new Error("disabled")); }; } catch (err) {}
+})();
+</script>
+
 </body>
 </html>
